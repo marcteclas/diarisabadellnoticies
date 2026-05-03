@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diari de Sabadell</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --vermell: #e8001c;
+      --groc:    #f5c800;
+      --negre:   #111111;
+      --gris-clar: #f4f4f4;
+      --gris-linia: #e0e0e0;
+      --text:    #1a1a1a;
+      --text-sub:#555;
+    }
+
+    body {
+      font-family: 'Source Sans 3', Arial, sans-serif;
+      background: #fff;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ══ CINTA SUPERIOR ══ */
+    .cinta {
+      background: var(--negre);
+      color: #ccc;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .cinta-item {
+      display: flex; align-items: center; gap: 5px;
+      padding: 6px 14px;
+      border-right: 1px solid #333;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .cinta-item:hover { color: #fff; }
+    .cinta-item .badge {
+      background: var(--vermell);
+      color: #fff;
+      padding: 1px 5px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .cinta-item .badge-groc {
+      background: var(--groc);
+      color: #000;
+      padding: 1px 5px;
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .cinta-right { margin-left: auto; display: flex; }
+
+    /* ══ CAPÇALERA PRINCIPAL ══ */
+    .header-main {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      border-bottom: 1px solid var(--gris-linia);
+      gap: 12px;
+    }
+    .hamburger { font-size: 22px; cursor: pointer; flex-shrink: 0; }
+
+    .logo-wrap {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+    .logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(22px, 4vw, 36px);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--negre);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .logo .corona {
+      color: var(--groc);
+      font-size: 0.7em;
+    }
+    .logo-sub {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888;
+      text-align: center;
+      margin-top: -4px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .btn-subscriu {
+      background: var(--vermell);
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 8px 14px;
+      border-radius: 3px;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+    }
+    .btn-subscriu:hover { background: #c5001a; }
+    .icon-btn { font-size: 20px; cursor: pointer; color: var(--negre); }
+
+    /* ══ NAV ══ */
+    nav {
+      border-bottom: 2px solid var(--negre);
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+    }
+    nav::-webkit-scrollbar { display: none; }
+    .nav-inner {
+      display: flex;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .nav-item {
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--negre);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      display: inline-flex; align-items: center; gap: 3px;
+    }
+    .nav-item:hover { border-bottom-color: var(--vermell); color: var(--vermell); }
+    .nav-item .arrow { font-size: 10px; }
+
+    /* ══ ETIQUETA SECCIÓ ══ */
+    .seccio-tag {
+      display: inline-block;
+      background: var(--vermell);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      margin-bottom: 14px;
+    }
+
+    /* ══ LAYOUT PRINCIPAL ══ */
+    .page-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 20px;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 40px;
+    }
+
+    /* ══ ARTICLE ══ */
+    .article-titol {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(24px, 3.5vw, 38px);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      color: var(--negre);
+    }
+    .article-subtitol {
+      font-size: 17px;
+      color: var(--text-sub);
+      line-height: 1.5;
+      margin-bottom: 20px;
+      font-weight: 400;
+      border-left: 3px solid var(--vermell);
+      padding-left: 12px;
+    }
+    .article-link-relacionat {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    .article-link-relacionat::before {
+      content: "◆";
+      color: var(--vermell);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .article-link-relacionat a { color: #1a5fa8; }
+    .article-link-relacionat a:hover { text-decoration: underline; }
+
+    /* ── Imatge principal ── */
+    .article-imatge-wrap {
+      margin-bottom: 8px;
+    }
+    .article-imatge-wrap img {
+      width: 100%;
+      height: auto;
+      display: block;
+      /* Si no tens imatge, es mostrarà el placeholder */
+    }
+    .article-imatge-placeholder {
+      width: 100%;
+      height: 360px;
+      background: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 14px;
+      border-radius: 2px;
+    }
+    .article-peu-foto {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+
+    /* ── Autor ── */
+    .autor-bloc {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--gris-linia);
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .autor-avatar {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: #ccc;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .autor-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .autor-nom { font-weight: 700; font-size: 14px; color: #1a5fa8; }
+    .autor-rol { font-size: 12px; color: #888; }
+
+    /* ── Data i xarxes ── */
+    .meta-linia {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+      border-top: 1px solid var(--gris-linia);
+      border-bottom: 1px solid var(--gris-linia);
+      padding: 10px 0;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .xarxes { display: flex; gap: 10px; align-items: center; }
+    .xarxa-btn {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--gris-linia);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; cursor: pointer;
+    }
+    .xarxa-btn:hover { background: var(--negre); color: #fff; }
+
+    /* ── Cos de l'article ── */
+    .article-cos p {
+      font-size: 17px;
+      line-height: 1.75;
+      margin-bottom: 18px;
+      color: #222;
+    }
+    .article-cos p strong { color: var(--negre); }
+    .article-cos .cita-destacada {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-style: italic;
+      border-left: 4px solid var(--vermell);
+      padding: 10px 20px;
+      margin: 24px 0;
+      color: #333;
+      background: var(--gris-clar);
+    }
+
+    /* ── Graella desapareguts ── */
+    .seccio-desapareguts {
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 2px solid var(--negre);
+    }
+    .seccio-desapareguts h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+    .graella-persones {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .persona-card {
+      border: 1px solid var(--gris-linia);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .persona-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+    .persona-card .persona-placeholder {
+      width: 100%;
+      height: 200px;
+      background: #e0e0e0;
+      display: flex; align-items: center; justify-content: center;
+      color: #aaa; font-size: 13px;
+    }
+    .persona-info {
+      padding: 10px 12px;
+      background: #fff;
+    }
+    .persona-info strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+    .persona-info span {
+      font-size: 12px;
+      color: #888;
+    }
+    .persona-info .desaparegut-data {
+      display: inline-block;
+      margin-top: 6px;
+      background: var(--vermell);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    /* ══ COLUMNA LATERAL ══ */
+    .lateral { }
+    .lateral-titol {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--negre);
+    }
+    .lateral-noticia {
+      display: flex;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gris-linia);
+      cursor: pointer;
+    }
+    .lateral-noticia:hover .lateral-noticia-titol { color: var(--vermell); }
+    .lateral-noticia-img {
+      width: 80px; height: 64px;
+      background: #ddd;
+      flex-shrink: 0;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .lateral-noticia-img img { width: 100%; height: 100%; object-fit: cover; }
+    .lateral-noticia-titol {
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 4px;
+      color: var(--negre);
+    }
+    .lateral-noticia-autor { font-size: 12px; color: #888; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 768px) {
+      .page-wrap {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .lateral { border-top: 2px solid var(--negre); padding-top: 20px; }
+      .cinta-right { display: none; }
+      .graella-persones { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .graella-persones { grid-template-columns: 1fr; }
+      .header-main { padding: 8px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- CINTA SUPERIOR -->
+<div class="cinta">
+  <div class="cinta-item">☁ El Temps &nbsp;<strong style="color:#fff">SABADELL 17 ºC</strong></div>
+  <div class="cinta-item">📄 El diari en PDF</div>
+  <div class="cinta-item"><span class="badge-groc">D.S. En línia</span> &nbsp;Vols avisar-nos d'una notícia?</div>
+  <div class="cinta-right">
+    <div class="cinta-item"><span class="badge">Suplements</span></div>
+    <div class="cinta-item">A Taula</div>
+    <div class="cinta-item">Cases</div>
+    <div class="cinta-item">Família i Nens</div>
+    <div class="cinta-item">Motor</div>
+  </div>
+</div>
+
+<!-- CAPÇALERA -->
+<div class="header-main">
+  <div class="hamburger">☰</div>
+  <div class="logo-wrap">
+    <div>
+      <div class="logo">
+        Diari<span style="color:var(--vermell)">de</span>Sabadell
+        <span class="corona">♛</span>
+      </div>
+      <div class="logo-sub">El diari de referència del Vallès</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <a href="#" class="btn-subscriu">SUBSCRIU-T'HI</a>
+    <span class="icon-btn">🔍</span>
+    <span class="icon-btn">👤</span>
+  </div>
+</div>
+
+<!-- NAVEGACIÓ -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-item">SABADELL <span class="arrow">▾</span></div>
+    <div class="nav-item">VALLÈS <span class="arrow">▾</span></div>
+    <div class="nav-item">DINERS</div>
+    <div class="nav-item">CULTURA I OCI</div>
+    <div class="nav-item">ESPORTS</div>
+    <div class="nav-item">OPINIÓ <span class="arrow">▾</span></div>
+    <div class="nav-item">OBITUARIS</div>
+  </div>
+</nav>
+
+<!-- CONTINGUT PRINCIPAL -->
+<div class="page-wrap">
+
+  <!-- ARTICLE -->
+  <main>
+    <div class="seccio-tag">SABADELL</div>
+
+    <!-- ✏️ CANVIA EL TÍTOL -->
+    <h1 class="article-titol">
+      Alarma al barri de Gràcia: quatre desaparicions en menys de dos mesos
+    </h1>
+
+    <!-- ✏️ CANVIA EL SUBTÍTOL -->
+    <p class="article-subtitol">
+      Els Mossos investiguen la connexió entre diversos veïns desapareguts, tots amb hàbits de consum similars
+    </p>
+
+    <!-- ✏️ CANVIA O ELIMINA EL LINK RELACIONAT -->
+    <div class="article-link-relacionat">
+      <a href="#">Els Mossos reforcen la presència al barri de Gràcia de Sabadell davant la pressió veïnal</a>
+    </div>
+
+    <!-- ✏️ IMATGE PRINCIPAL: canvia "foto-principal.jpg" pel nom del teu fitxer -->
+    <div class="article-imatge-wrap">
+      <img src="foto-principal.jpg"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+           alt="Imatge principal" />
+      <div class="article-imatge-placeholder" style="display:none">
+        📷 Posa aquí la teva foto principal<br>(canvia «foto-principal.jpg»)
+      </div>
+    </div>
+    <!-- ✏️ CANVIA EL PEU DE FOTO -->
+    <p class="article-peu-foto">Vista del barri de Gràcia de Sabadell – Arxiu DS</p>
+
+    <!-- AUTOR -->
+    <div class="autor-bloc">
+      <div class="autor-avatar">
+        <!-- ✏️ Canvia "foto-autor.jpg" o elimina la línia img per mostrar avatar buit -->
+        <img src="foto-autor.jpg"
+             onerror="this.style.display='none'"
+             alt="Autor" />
+      </div>
+      <div>
+        <!-- ✏️ CANVIA NOM I ROL DE L'AUTOR -->
+        <div class="autor-nom">Redacció Diari de Sabadell</div>
+        <div class="autor-rol">Redactora en cap</div>
+      </div>
+    </div>
+
+    <!-- META: DATA I XARXES -->
+    <div class="meta-linia">
+      <!-- ✏️ CANVIA LA DATA -->
+      <span>Publicat el <strong>15 d'abril de 2024</strong> a les 09:30 &nbsp;·&nbsp; Actualitzat a les 11:45</span>
+      <div class="xarxes">
+        <div class="xarxa-btn">𝕏</div>
+        <div class="xarxa-btn">📘</div>
+        <div class="xarxa-btn">💬</div>
+        <div class="xarxa-btn">✉</div>
+      </div>
+    </div>
+
+    <!-- ✏️ COS DE L'ARTICLE: canvia els paràgrafs -->
+    <div class="article-cos">
+      <p><strong>Sabadell</strong> – La preocupació creix al barri de Gràcia després de la desaparició de quatre persones en menys de dos mesos. Els Mossos d'Esquadra mantenen oberta una investigació per determinar si els casos estan relacionats.</p>
+
+      <p>Les víctimes, totes residents o vinculades al barri, comparteixen un perfil aparentment normal. Segons fonts policials, no hi ha indicis clars de violència en cap dels casos, però la coincidència temporal ha encès totes les alarmes.</p>
+
+      <div class="cita-destacada">
+        "Mai havia passat una cosa així al nostre barri. Tots ens coneixíem."
+      </div>
+
+      <p>El darrer desaparegut és un treballador d'un supermercat de la zona, fet que podria aportar una nova línia d'investigació. Els agents no descarten cap hipòtesi, tot i que de moment no s'ha produït cap detenció.</p>
+
+      <p>Veïns del barri han expressat la seva inquietud i asseguren que "mai havia passat una cosa així". Alguns testimonis afirmen haver vist moviments sospitosos durant la nit en carrers poc transitats.</p>
+
+      <p><strong>Totes les víctimes compartien hàbits alimentaris similars</strong>, un detall que els investigadors no descarten que sigui rellevant per al cas.</p>
+    </div>
+
+    <!-- GRAELLA DESAPAREGUTS -->
+    <div class="seccio-desapareguts">
+      <h2>Persones desaparegudes</h2>
+      <div class="graella-persones">
+
+        <!-- ✏️ PERSONA 1: canvia la foto, nom i data -->
+        <div class="persona-card">
+          <img src="persona1.jpg"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+               alt="Persona 1" />
+          <div class="persona-placeholder" style="display:none">📷 persona1.jpg</div>
+          <div class="persona-info">
+            <strong>Laura Sánchez, 35 anys</strong>
+            <span>Veïna del carrer Rosselló</span>
+            <div class="desaparegut-data">Desapareguda el 28 de març</div>
+          </div>
+        </div>
+
+        <!-- ✏️ PERSONA 2 -->
+        <div class="persona-card">
+          <img src="persona2.jpg"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+               alt="Persona 2" />
+          <div class="persona-placeholder" style="display:none">📷 persona2.jpg</div>
+          <div class="persona-info">
+            <strong>Jordi Prat, 42 anys</strong>
+            <span>Treballador del barri</span>
+            <div class="desaparegut-data">Desaparegut el 12 de març</div>
+          </div>
+        </div>
+
+        <!-- ✏️ PERSONA 3 -->
+        <div class="persona-card">
+          <img src="persona3.jpg"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+               alt="Persona 3" />
+          <div class="persona-placeholder" style="display:none">📷 persona3.jpg</div>
+          <div class="persona-info">
+            <strong>Ahmed Benali, 51 anys</strong>
+            <span>Comerciant de la zona</span>
+            <div class="desaparegut-data">Desaparegut el 10 d'abril</div>
+          </div>
+        </div>
+
+        <!-- ✏️ PERSONA 4 -->
+        <div class="persona-card">
+          <img src="persona4.jpg"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+               alt="Persona 4" />
+          <div class="persona-placeholder" style="display:none">📷 persona4.jpg</div>
+          <div class="persona-info">
+            <strong>Marc Vidal, 38 anys</strong>
+            <span>Resident des de fa 10 anys</span>
+            <div class="desaparegut-data">Desaparegut el 22 d'abril</div>
+          </div>
+        </div>
+
+      </div><!-- fi graella -->
+    </div><!-- fi secció desapareguts -->
+
+  </main>
+
+  <!-- COLUMNA LATERAL "ARA A PORTADA" -->
+  <aside class="lateral">
+    <div class="lateral-titol">Ara a portada</div>
+
+    <!-- ✏️ NOTÍCIES LATERALS: canvia títols, autors i fotos -->
+
+    <div class="lateral-noticia">
+      <div class="lateral-noticia-img">
+        <img src="lateral1.jpg" onerror="this.style.display='none'" alt="" />
+      </div>
+      <div>
+        <div class="lateral-noticia-titol">Aprendre a conviure amb la pèrdua d'un ésser estimat: "Compartir la tragèdia és terapèutic per al dol"</div>
+        <div class="lateral-noticia-autor">Jan Cañadell Puigmartí</div>
+      </div>
+    </div>
+
+    <div class="lateral-noticia">
+      <div class="lateral-noticia-img">
+        <img src="lateral2.jpg" onerror="this.style.display='none'" alt="" />
+      </div>
+      <div>
+        <div class="lateral-noticia-titol">Ramon Alberch, l'home que ordena la memòria d'un país</div>
+        <div class="lateral-noticia-autor">León Guerrero</div>
+      </div>
+    </div>
+
+    <div class="lateral-noticia">
+      <div class="lateral-noticia-img">
+        <img src="lateral3.jpg" onerror="this.style.display='none'" alt="" />
+      </div>
+      <div>
+        <div class="lateral-noticia-titol">50 anys de la Jovenívola: la Colla celebra mig segle de música amb un emotiu retrobament generacional</div>
+        <div class="lateral-noticia-autor">Redacció</div>
+      </div>
+    </div>
+
+    <div class="lateral-noticia">
+      <div class="lateral-noticia-img">
+        <img src="lateral4.jpg" onerror="this.style.display='none'" alt="" />
+      </div>
+      <div>
+        <div class="lateral-noticia-titol">La ginebra de Sabadell Outer Gin guanya la London Spirits Competition</div>
+        <div class="lateral-noticia-autor">Guillem Plans Roca</div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+</body>
+</html>
