@@ -27,7 +27,6 @@
 
     a { text-decoration: none; color: inherit; }
 
-    /* ══ CINTA SUPERIOR ══ */
     .cinta {
       background: var(--negre);
       color: #ccc;
@@ -64,7 +63,6 @@
     }
     .cinta-right { margin-left: auto; display: flex; }
 
-    /* ══ CAPÇALERA PRINCIPAL ══ */
     .header-main {
       display: flex;
       align-items: center;
@@ -124,7 +122,6 @@
     .btn-subscriu:hover { background: #c5001a; }
     .icon-btn { font-size: 20px; cursor: pointer; color: var(--negre); }
 
-    /* ══ NAV ══ */
     nav {
       border-bottom: 2px solid var(--negre);
       overflow-x: auto;
@@ -152,7 +149,6 @@
     .nav-item:hover { border-bottom-color: var(--vermell); color: var(--vermell); }
     .nav-item .arrow { font-size: 10px; }
 
-    /* ══ ETIQUETA SECCIÓ ══ */
     .seccio-tag {
       display: inline-block;
       background: var(--vermell);
@@ -166,7 +162,6 @@
       margin-bottom: 14px;
     }
 
-    /* ══ LAYOUT PRINCIPAL ══ */
     .page-wrap {
       max-width: 1100px;
       margin: 0 auto;
@@ -176,7 +171,6 @@
       gap: 40px;
     }
 
-    /* ══ ARTICLE ══ */
     .article-titol {
       font-family: 'Playfair Display', Georgia, serif;
       font-size: clamp(24px, 3.5vw, 38px);
@@ -211,7 +205,6 @@
     .article-link-relacionat a { color: #1a5fa8; }
     .article-link-relacionat a:hover { text-decoration: underline; }
 
-    /* ── Imatge principal ── */
     .article-imatge-wrap {
       margin-bottom: 8px;
     }
@@ -219,7 +212,6 @@
       width: 100%;
       height: auto;
       display: block;
-      /* Si no tens imatge, es mostrarà el placeholder */
     }
     .article-imatge-placeholder {
       width: 100%;
@@ -239,7 +231,6 @@
       font-style: italic;
     }
 
-    /* ── Autor ── */
     .autor-bloc {
       display: flex;
       align-items: center;
@@ -260,7 +251,6 @@
     .autor-nom { font-weight: 700; font-size: 14px; color: #1a5fa8; }
     .autor-rol { font-size: 12px; color: #888; }
 
-    /* ── Data i xarxes ── */
     .meta-linia {
       display: flex;
       align-items: center;
@@ -284,7 +274,6 @@
     }
     .xarxa-btn:hover { background: var(--negre); color: #fff; }
 
-    /* ── Cos de l'article ── */
     .article-cos p {
       font-size: 17px;
       line-height: 1.75;
@@ -303,7 +292,6 @@
       background: var(--gris-clar);
     }
 
-    /* ── Graella desapareguts ── */
     .seccio-desapareguts {
       margin-top: 36px;
       padding-top: 20px;
@@ -324,6 +312,15 @@
       border: 1px solid var(--gris-linia);
       border-radius: 4px;
       overflow: hidden;
+    }
+    /* Marc Vidal card: clickable */
+    .persona-card.clickable {
+      cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .persona-card.clickable:hover {
+      box-shadow: 0 4px 16px rgba(232,0,28,0.18);
+      border-color: var(--vermell);
     }
     .persona-card img {
       width: 100%;
@@ -363,7 +360,6 @@
       border-radius: 2px;
     }
 
-    /* ══ COLUMNA LATERAL ══ */
     .lateral { }
     .lateral-titol {
       font-family: 'Playfair Display', serif;
@@ -400,7 +396,6 @@
     }
     .lateral-noticia-autor { font-size: 12px; color: #888; }
 
-    /* ══ RESPONSIVE ══ */
     @media (max-width: 768px) {
       .page-wrap {
         grid-template-columns: 1fr;
@@ -418,7 +413,6 @@
 </head>
 <body>
 
-<!-- CINTA SUPERIOR -->
 <div class="cinta">
   <div class="cinta-item">☁ El Temps &nbsp;<strong style="color:#fff">SABADELL 17 ºC</strong></div>
   <div class="cinta-item">📄 El diari en PDF</div>
@@ -432,7 +426,6 @@
   </div>
 </div>
 
-<!-- CAPÇALERA -->
 <div class="header-main">
   <div class="hamburger">☰</div>
   <div class="logo-wrap">
@@ -451,7 +444,6 @@
   </div>
 </div>
 
-<!-- NAVEGACIÓ -->
 <nav>
   <div class="nav-inner">
     <div class="nav-item">SABADELL <span class="arrow">▾</span></div>
@@ -464,29 +456,23 @@
   </div>
 </nav>
 
-<!-- CONTINGUT PRINCIPAL -->
 <div class="page-wrap">
 
-  <!-- ARTICLE -->
   <main>
     <div class="seccio-tag">SABADELL</div>
 
-    <!-- ✏️ CANVIA EL TÍTOL -->
     <h1 class="article-titol">
       Alarma al barri de Gràcia: quatre desaparicions en menys de dos mesos
     </h1>
 
-    <!-- ✏️ CANVIA EL SUBTÍTOL -->
     <p class="article-subtitol">
       Els Mossos investiguen la connexió entre diversos veïns desapareguts, tots amb hàbits de consum similars
     </p>
 
-    <!-- ✏️ CANVIA O ELIMINA EL LINK RELACIONAT -->
     <div class="article-link-relacionat">
       <a href="#">Els Mossos reforcen la presència al barri de Gràcia de Sabadell davant la pressió veïnal</a>
     </div>
 
-    <!-- ✏️ IMATGE PRINCIPAL: canvia "foto-principal.jpg" pel nom del teu fitxer -->
     <div class="article-imatge-wrap">
       <img src="foto-principal.jpg"
            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
@@ -495,27 +481,21 @@
         📷 Posa aquí la teva foto principal<br>(canvia «foto-principal.jpg»)
       </div>
     </div>
-    <!-- ✏️ CANVIA EL PEU DE FOTO -->
     <p class="article-peu-foto">Vista del barri de Gràcia de Sabadell – Arxiu DS</p>
 
-    <!-- AUTOR -->
     <div class="autor-bloc">
       <div class="autor-avatar">
-        <!-- ✏️ Canvia "foto-autor.jpg" o elimina la línia img per mostrar avatar buit -->
         <img src="foto-autor.jpg"
              onerror="this.style.display='none'"
              alt="Autor" />
       </div>
       <div>
-        <!-- ✏️ CANVIA NOM I ROL DE L'AUTOR -->
         <div class="autor-nom">Redacció Diari de Sabadell</div>
         <div class="autor-rol">Redactora en cap</div>
       </div>
     </div>
 
-    <!-- META: DATA I XARXES -->
     <div class="meta-linia">
-      <!-- ✏️ CANVIA LA DATA -->
       <span>Publicat el <strong>15 d'abril de 2024</strong> a les 09:30 &nbsp;·&nbsp; Actualitzat a les 11:45</span>
       <div class="xarxes">
         <div class="xarxa-btn">𝕏</div>
@@ -525,7 +505,6 @@
       </div>
     </div>
 
-    <!-- ✏️ COS DE L'ARTICLE: canvia els paràgrafs -->
     <div class="article-cos">
       <p><strong>Sabadell</strong> – La preocupació creix al barri de Gràcia després de la desaparició de quatre persones en menys de dos mesos. Els Mossos d'Esquadra mantenen oberta una investigació per determinar si els casos estan relacionats.</p>
 
@@ -542,12 +521,10 @@
       <p><strong>Segons les investigacions recents totes les víctimes excepte el carnisser Marc Vidal comparteixen hàbits de consum molt semblant de carn i productes derivats. </strong>. Aquest és un detall que els investigadors no descarten que sigui rellevant per al cas.</p>
     </div>
 
-    <!-- GRAELLA DESAPAREGUTS -->
     <div class="seccio-desapareguts">
       <h2>Persones desaparegudes</h2>
       <div class="graella-persones">
 
-        <!-- ✏️ PERSONA 1: canvia la foto, nom i data -->
         <div class="persona-card">
           <img src="persona1.jpg"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
@@ -560,7 +537,6 @@
           </div>
         </div>
 
-        <!-- ✏️ PERSONA 2 -->
         <div class="persona-card">
           <img src="persona2.jpg"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
@@ -573,7 +549,6 @@
           </div>
         </div>
 
-        <!-- ✏️ PERSONA 3 -->
         <div class="persona-card">
           <img src="persona3.jpg"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
@@ -586,11 +561,11 @@
           </div>
         </div>
 
-        <!-- ✏️ PERSONA 4 -->
-        <div class="persona-card">
+        <!-- MARC VIDAL: clickable → obre Instagram -->
+        <div class="persona-card clickable" onclick="window.open('https://marcteclas.github.io/diarisabadellnoticies/instagram-marc-vidal.html', '_blank')">
           <img src="persona4.jpg"
                onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
-               alt="Persona 4" />
+               alt="Marc Vidal" />
           <div class="persona-placeholder" style="display:none">📷 persona4.jpg</div>
           <div class="persona-info">
             <strong>Marc Vidal, 38 anys</strong>
@@ -599,16 +574,13 @@
           </div>
         </div>
 
-      </div><!-- fi graella -->
-    </div><!-- fi secció desapareguts -->
+      </div>
+    </div>
 
   </main>
 
-  <!-- COLUMNA LATERAL "ARA A PORTADA" -->
   <aside class="lateral">
     <div class="lateral-titol">Ara a portada</div>
-
-    <!-- ✏️ NOTÍCIES LATERALS: canvia títols, autors i fotos -->
 
     <div class="lateral-noticia">
       <div class="lateral-noticia-img">
