@@ -290,8 +290,6 @@
   </div>
 </div>
 
-<audio id="hack-audio" src="Missatge2.mp3" preload="auto"></audio>
-
 <script>
   var liked = false, count = 143;
   function toggleLike() {
@@ -342,15 +340,48 @@
     });
   }
 
+  /* Pre-càrrega de l'àudio en el primer toc/clic de l'usuari,
+     necessari per a mòbils que bloquegen l'àudio sense interacció */
+  var audio = new Audio('Missatge2.mp3');
+  audio.preload = 'auto';
+
+  function playAudio() {
+    audio.currentTime = 0;
+    var p = audio.play();
+    if (p !== undefined) {
+      p.catch(function() {
+        /* Si falla (política de mòbil), esperem el primer gest */
+        var handler = function() {
+          audio.play();
+          document.removeEventListener('touchstart', handler);
+          document.removeEventListener('click', handler);
+        };
+        document.addEventListener('touchstart', handler, { once: true });
+        document.addEventListener('click', handler, { once: true });
+      });
+    }
+  }
+
+  /* Desbloquegem l'àudio en qualsevol toc previ a l'overlay */
+  var unlocked = false;
+  function unlockAudio() {
+    if (unlocked) return;
+    unlocked = true;
+    audio.load();
+    /* Reproduïm i parem immediatament per desbloquejar el context */
+    var p = audio.play();
+    if (p !== undefined) {
+      p.then(function() { audio.pause(); audio.currentTime = 0; }).catch(function() {});
+    }
+  }
+  document.addEventListener('touchstart', unlockAudio, { once: true });
+  document.addEventListener('click', unlockAudio, { once: true });
+
   setTimeout(function() {
     var overlay = document.getElementById('hack-overlay');
     overlay.style.display = 'block';
     drawStatic();
-    var audio = document.getElementById('hack-audio');
-    audio.play().catch(function() {
-      document.addEventListener('touchstart', function() { audio.play(); }, { once: true });
-      document.addEventListener('click', function() { audio.play(); }, { once: true });
-    });
+    playAudio();
     mostrarLinies();
   }, 20000);
 </script>
