@@ -291,21 +291,25 @@
 </div>
 
 <script>
-  var liked = false, count = 143;
-  function toggleLike() {
-    liked = !liked;
-    count += liked ? 1 : -1;
-    document.getElementById('like-btn').textContent = liked ? '❤️' : '🤍';
-    document.getElementById('likes-count').textContent = count + " m'agrada";
-  }
+  /* ── Àudio ── */
+  var audio = new Audio('Missatge2.mp3');
+  audio.preload = 'auto';
 
+  /* ── Estat ── */
+  var liked = false, count = 143;
+  var overlayActiu = false;
+  var scrollTimer = null;
+  var scrollArrancat = false;
+
+  /* ── Canvas estàtic ── */
   var canvas = document.getElementById('static-canvas');
   var ctx = canvas.getContext('2d');
   function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
   resizeCanvas();
   window.addEventListener('resize', resizeCanvas);
   function drawStatic() {
-    if (!document.getElementById('hack-overlay').style.display || document.getElementById('hack-overlay').style.display === 'none') return;
+    if (document.getElementById('hack-overlay').style.display === 'none' ||
+        document.getElementById('hack-overlay').style.display === '') return;
     var w = canvas.width, h = canvas.height;
     var img = ctx.createImageData(w, h);
     var data = img.data;
@@ -318,15 +322,15 @@
     requestAnimationFrame(drawStatic);
   }
 
+  /* ── Línies hacker ── */
   var linies = [
-    { text: ">> ACCÉS NO AUTORITZAT DETECTAT",    cls: "",          delay: 200  },
-    { text: ">> INTERCEPTANT COMUNICACIONS...",     cls: "",          delay: 800  },
-    { text: ">> FITXERS ENCRIPTATS: 100%",          cls: "",          delay: 1600 },
-    { text: "US ESTIC OBSERVANT",                   cls: "red",       delay: 2600 },
-    { text: "SÉ QUE ESTEU INVESTIGANT",             cls: "red",       delay: 3400 },
-    { text: "DEIXEU-HO ESTAR.",                     cls: "red blink", delay: 4400 },
+    { text: ">> ACCÉS NO AUTORITZAT DETECTAT",  cls: "",          delay: 200  },
+    { text: ">> INTERCEPTANT COMUNICACIONS...", cls: "",          delay: 800  },
+    { text: ">> FITXERS ENCRIPTATS: 100%",       cls: "",          delay: 1600 },
+    { text: "US ESTIC OBSERVANT",                cls: "red",       delay: 2600 },
+    { text: "SÉ QUE ESTEU INVESTIGANT",          cls: "red",       delay: 3400 },
+    { text: "DEIXEU-HO ESTAR.",                  cls: "red blink", delay: 4400 },
   ];
-
   function mostrarLinies() {
     var container = document.getElementById('hack-text');
     linies.forEach(function(l) {
@@ -340,50 +344,44 @@
     });
   }
 
-  /* Pre-càrrega de l'àudio en el primer toc/clic de l'usuari,
-     necessari per a mòbils que bloquegen l'àudio sense interacció */
-  var audio = new Audio('Missatge2.mp3');
-  audio.preload = 'auto';
-
-  function playAudio() {
-    audio.currentTime = 0;
-    var p = audio.play();
-    if (p !== undefined) {
-      p.catch(function() {
-        /* Si falla (política de mòbil), esperem el primer gest */
-        var handler = function() {
-          audio.play();
-          document.removeEventListener('touchstart', handler);
-          document.removeEventListener('click', handler);
-        };
-        document.addEventListener('touchstart', handler, { once: true });
-        document.addEventListener('click', handler, { once: true });
-      });
-    }
-  }
-
-  /* Desbloquegem l'àudio en qualsevol toc previ a l'overlay */
-  var unlocked = false;
-  function unlockAudio() {
-    if (unlocked) return;
-    unlocked = true;
-    audio.load();
-    /* Reproduïm i parem immediatament per desbloquejar el context */
-    var p = audio.play();
-    if (p !== undefined) {
-      p.then(function() { audio.pause(); audio.currentTime = 0; }).catch(function() {});
-    }
-  }
-  document.addEventListener('touchstart', unlockAudio, { once: true });
-  document.addEventListener('click', unlockAudio, { once: true });
-
-  setTimeout(function() {
+  /* ── Mostrar overlay (crida sempre des d'un event d'usuari o setTimeout) ── */
+  function mostrarOverlay() {
+    if (overlayActiu) return;
+    overlayActiu = true;
     var overlay = document.getElementById('hack-overlay');
     overlay.style.display = 'block';
     drawStatic();
-    playAudio();
     mostrarLinies();
-  }, 20000);
+    /* L'àudio s'intenta reproduir; com venim d'un clic/toc directe hauria de funcionar */
+    audio.currentTime = 0;
+    audio.play().catch(function() {
+      /* Fallback: primer toc a l'overlay el dispara */
+      overlay.addEventListener('touchstart', function() { audio.play(); }, { once: true });
+      overlay.addEventListener('click',      function() { audio.play(); }, { once: true });
+    });
+  }
+
+  /* ── Like: overlay immediat (venim del clic, àudio desbloquejat) ── */
+  function toggleLike() {
+    liked = !liked;
+    count += liked ? 1 : -1;
+    document.getElementById('like-btn').textContent = liked ? '❤️' : '🤍';
+    document.getElementById('likes-count').textContent = count + " m'agrada";
+    mostrarOverlay();
+  }
+
+  /* ── Botons "Respondre": overlay immediat ── */
+  document.querySelectorAll('.reply').forEach(function(btn) {
+    btn.addEventListener('click', function() { mostrarOverlay(); });
+    btn.addEventListener('touchstart', function() { mostrarOverlay(); }, { passive: true });
+  });
+
+  /* ── Scroll: activa countdown de 30s (només el primer cop) ── */
+  window.addEventListener('scroll', function() {
+    if (overlayActiu || scrollArrancat) return;
+    scrollArrancat = true;
+    scrollTimer = setTimeout(function() { mostrarOverlay(); }, 30000);
+  }, { passive: true });
 </script>
 </body>
 </html>
