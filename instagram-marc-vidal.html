@@ -74,7 +74,6 @@
     .post-location { font-size: 11px; color: var(--text-sub); }
     .post-more { font-size: 20px; cursor: pointer; padding: 0 4px; }
 
-    /* 4:5 portrait per al post principal */
     .post-image { width: 100%; aspect-ratio: 4/5; background: #efefef; overflow: hidden; position: relative; cursor: pointer; }
     .post-image.square { aspect-ratio: 1/1; }
     .post-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -102,7 +101,6 @@
     .comment-input::placeholder { color: var(--text-sub); }
     .comment-post-btn { color: var(--blue); font-weight: 700; font-size: 14px; cursor: pointer; }
 
-    /* Suggested */
     .suggested-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 12px 0; }
     .suggested-title { font-weight: 700; font-size: 14px; padding: 0 16px 10px; display: flex; justify-content: space-between; align-items: center; }
     .suggested-title span { color: var(--text-sub); font-weight: 400; font-size: 13px; cursor: pointer; }
@@ -231,22 +229,32 @@
       <span class="hashtag"> #sabadell #graciabarri #desaparicions #algopassa</span>
     </div>
     <div class="post-comments-count trigger">Veure els 38 comentaris</div>
-    <div class="post-comment"><span class="uname">anna_gracia_sbd</span>Marc això fa por... cuida't!! 😨<span class="reply trigger">Respondre</span></div>
-    <div class="post-comment"><span class="uname">jordi_vecino</span>Coincidència? Espero que sí... 🤔<span class="reply trigger">Respondre</span></div>
-        <div class="post-comment"><span class="uname">Pol_sbd</span>Has parlat amb la policia? Sembla important.<span class="reply trigger">Respondre</span></div>
-     <div class="post-comment-reply">
-      <span class="uname">marcvidal_sabadell</span><span class="mention">@Polsbd</span>No sé Pol, demà faré un cop d'ull als albarans de comandes que guarda l'encarregada del Sorli a veure què trobo. Estic molt espantat. <span class="reply trigger">Respondre</span>
+
+    <div class="post-comment">
+      <span class="uname">anna_gracia_sbd</span>Marc això fa por... cuida't!! 😨<span class="reply trigger">Respondre</span>
     </div>
-    <div class="post-comment"><span class="uname">Xavi_sbd</span>Déu meu Marc... vine a la casa i anem a deunciar-ho junts a la poli.😰<span class="reply trigger">Respondre</span></div>
+    <div class="post-comment">
+      <span class="uname">jordi_vecino</span>Coincidència? Espero que sí... 🤔<span class="reply trigger">Respondre</span>
+    </div>
+    <div class="post-comment">
+      <span class="uname">Pol_sbd</span>Has parlat amb la policia? Sembla important.<span class="reply trigger">Respondre</span>
+    </div>
     <div class="post-comment-reply">
-      <span class="uname">marcvidal_sabadell</span><span class="mention">@Xavi_sbd</span>Ei Xavi als albarans he descobert una cosa esgarrifosa, molt important. Ves al Sorli a buscar-los els he deixat al teu nom. Tinc molta por!😨<span class="reply trigger">Respondre</span>
+      <span class="uname">marcvidal_sabadell</span><span class="mention">@Pol_sbd</span>No sé Pol, demà faré un cop d'ull als albarans de comandes que guarda l'encarregada del Sorli a veure què trobo. Estic molt espantat.<span class="reply trigger">Respondre</span>
+    </div>
+    <div class="post-comment">
+      <span class="uname">Xavi_sbd</span>Déu meu Marc... vine a la casa i anem a denunciar-ho junts a la poli. 😰<span class="reply trigger">Respondre</span>
     </div>
     <div class="post-comment-reply">
-      <span class="uname">@Xavi_sbd</span><span class="mention">@marcvidal_sabadell</span>Ostres ara no puc acabem de plegar i ja sóc a casa. Fins dilluns no puc passar. Ves a la policia! <span class="reply trigger">Respondre</span>
-    </div
-       <div class="post-comment-reply">
-      <span class="uname">marcvidal_sabadell</span><span class="mention">@Xavi_sbd</span>Xavi crec que m'estan seguint. T'he deixat un sobre a l'obra on treballes per si no ens veiem més. <span class="reply trigger">Respondre</span>
+      <span class="uname">marcvidal_sabadell</span><span class="mention">@Xavi_sbd</span>Ei Xavi als albarans he descobert una cosa esgarrifosa, molt important. Ves al Sorli a buscar-los, els he deixat al teu nom. Tinc molta por! 😨<span class="reply trigger">Respondre</span>
     </div>
+    <div class="post-comment-reply">
+      <span class="uname">Xavi_sbd</span><span class="mention">@marcvidal_sabadell</span>Ostres ara no puc, acabem de plegar i ja sóc a casa. Fins dilluns no puc passar. Ves a la policia!<span class="reply trigger">Respondre</span>
+    </div>
+    <div class="post-comment-reply">
+      <span class="uname">marcvidal_sabadell</span><span class="mention">@Xavi_sbd</span>Xavi crec que m'estan seguint. T'he deixat un sobre a l'obra on treballes per si no ens veiem més.<span class="reply trigger">Respondre</span>
+    </div>
+
     <div class="post-time">fa 3 dies</div>
     <div class="post-add-comment">
       <div class="comment-avatar">Tu</div>
@@ -457,7 +465,6 @@
     });
   }
 
-  /* Like */
   function toggleLike(){
     liked = !liked; count += liked ? 1 : -1;
     document.getElementById('like-btn').textContent = liked ? '❤️' : '🤍';
@@ -465,13 +472,11 @@
     mostrarOverlay();
   }
 
-  /* Tots els .trigger → overlay immediat */
   document.querySelectorAll('.trigger').forEach(function(el){
     el.addEventListener('click', function(e){ e.stopPropagation(); mostrarOverlay(); });
     el.addEventListener('touchstart', function(e){ e.stopPropagation(); mostrarOverlay(); }, { passive: true });
   });
 
-  /* Scroll → countdown 30s */
   window.addEventListener('scroll', function(){
     if(overlayActiu || scrollArrancat) return;
     scrollArrancat = true;
